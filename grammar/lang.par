@@ -1,0 +1,154 @@
+%{
+#include <stdio.h>
+#include "parser.hh"
+#include "code/compiler.h"
+
+extern int yylex();
+extern int yyparse();
+extern void yyerror(const char* s);
+%}
+%union
+{
+    int ival;
+    float fval;
+	char cval;
+    char* sval;
+    void* node;
+}
+
+%error-verbose
+%token <ival> INT_LITERAL
+%token <fval> FLOAT_LITERAL
+%token <cval> CHAR_LITERAL
+%token <sval> STRING_LITERAL
+
+%token <string> DOUBLE FLOAT INT UNSIGNED_INT LONG UNSIGNED_LONG VOID
+%token STRUCT
+%token CONST
+%token FOR WHILE BREAK CONTINUE IF ELSE RETURN
+%token <string> IDENTIFIER
+
+%type<node> expression
+%type<node> expr
+%type<node> binaryexpr
+%type<node> unaryexpr
+%type<node> ordinaryexpr
+%type<node> callexpr
+%type<node> atom
+%left '+' '-'
+%left '*' '/' '%'
+
+%start statement_list
+
+%%
+
+type
+        : DOUBLE
+        | FLOAT
+        | INT
+        | UNSIGNED_INT
+        | LONG
+        | UNSIGNED_LONG
+        | VOID
+        | IDENTIFIER
+        ;
+
+arg_list
+        : expression
+        | arg_list ',' expression
+        ;
+
+expression
+        : expr
+        | expr '?' expression ':' expression
+        ;
+
+expr
+        : binaryexpr
+        ;
+
+/* binary expressions are two unary expressions and an operator */
+binaryexpr
+        : unaryexpr '+' unaryexpr { $$ = new BinaryExpr(); }
+        | unaryexpr '-' unaryexpr
+        | unaryexpr '*' unaryexpr
+        | unaryexpr '/' unaryexpr
+        | unaryexpr
+        ;
+
+/* unary expressions is either an expression with a unary operator or just an operator free expression */
+unaryexpr
+        : '+' ordinaryexpr { $$ = new UnaryExpr(); }
+        | '-' ordinaryexpr
+        | '!' ordinaryexpr
+        | '~' ordinaryexpr
+        | ordinaryexpr
+        ;
+
+ordinaryexpr
+        : callexpr { $$ = $1 }
+        | atom { $$ = $1 }
+        ;
+
+callexpr
+        : IDENTIFIER '(' arg_list ')'
+        | IDENTIFIER '(' ')'
+        ;
+
+atom
+        : INT_LITERAL
+        | FLOAT_LITERAL
+        | STRING_LITERAL
+        | IDENTIFIER
+        | '(' expression ')'
+        ;
+
+statement
+        : condition_statement
+        | while_statement
+        | for_statement
+        | declaration
+        | function
+        | error ';'
+        | error '}'
+        ;
+
+declaration
+        : type IDENTIFIER ';'
+        | type IDENTIFIER '=' expression ';'
+        ;
+
+condition_statement
+        : IF '(' expression ')' '{' statement_list '}'
+        | IF '(' expression ')' statement
+        | ELSE '{' statement_list '}'
+        | ELSE statement
+        ;
+
+while_statement
+        : WHILE '(' expression ')' '{' statement_list '}'
+        | WHILE '(' expression ')' statement
+        ;
+
+for_statement
+        : FOR '(' declaration ';' expression ';' expression ')'
+        | FOR '(' ';' expression ';' expression ')'
+        | FOR '(' ';' ';' expression ')'
+        | FOR '(' ';' ';' ')'
+        ;
+
+statement_list
+        : statement
+        | statement_list statement
+        ;
+
+param_list
+        : expression
+        | param_list ',' expression
+        ;
+
+function
+        : type IDENTIFIER '(' param_list ')' '{' statement_list '}'
+        | type IDENTIFIER '(' ')' '{' statement_list '}'
+        ;
+%%

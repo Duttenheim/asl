@@ -1,0 +1,6 @@
+void main()
+{
+    int foo = 5;
+    int bar = 10;
+    int foobar = 2.0e10;
+}

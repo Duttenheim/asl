@@ -1,0 +1,21 @@
+//-----------------------------------------------------------------------------------------------------
+/*
+    NAMESPACE::CLASS
+
+    DESC
+    
+    Copyright 2015 - See license file LICENSE.txt
+*/
+//-----------------------------------------------------------------------------------------------------
+ 
+namespace NAMESPACE {
+
+class CLASS
+{
+    /// constructor
+    CLASS();
+    /// destructor
+    virtual ~CLASS();
+};
+
+// namespace NAMESPACE
