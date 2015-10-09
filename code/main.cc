@@ -22,7 +22,6 @@ int main(int argc, const char** argv)
     {
         yyparse();
     }
-
     while (!feof(yyin) && shouldStop < 1);
     return 0;
 }

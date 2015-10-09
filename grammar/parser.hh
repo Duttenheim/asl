@@ -39,6 +39,13 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 11 "grammar/lang.par" /* yacc.c:1909  */
+
+#include "code/compiler.h"
+using namespace ASL;
+
+#line 49 "grammar/parser.hh" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -96,15 +103,15 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 11 "grammar/lang.par" /* yacc.c:1909  */
+#line 16 "grammar/lang.par" /* yacc.c:1909  */
 
     int ival;
     float fval;
 	char cval;
     char* sval;
-    void* node;
+    Expr* node;
 
-#line 108 "grammar/parser.hh" /* yacc.c:1909  */
+#line 115 "grammar/parser.hh" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

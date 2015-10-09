@@ -66,8 +66,8 @@
 
 #include <stdio.h>
 #include "parser.hh"
-#include "code/compiler.h"
 
+using namespace ASL;
 extern int yylex();
 extern int yyparse();
 extern void yyerror(const char* s);
@@ -101,6 +101,13 @@ extern void yyerror(const char* s);
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 11 "grammar/lang.par" /* yacc.c:355  */
+
+#include "code/compiler.h"
+using namespace ASL;
+
+#line 111 "grammar/parser.cc" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -158,15 +165,15 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 11 "grammar/lang.par" /* yacc.c:355  */
+#line 16 "grammar/lang.par" /* yacc.c:355  */
 
     int ival;
     float fval;
 	char cval;
     char* sval;
-    void* node;
+    Expr* node;
 
-#line 170 "grammar/parser.cc" /* yacc.c:355  */
+#line 177 "grammar/parser.cc" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -181,7 +188,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 185 "grammar/parser.cc" /* yacc.c:358  */
+#line 192 "grammar/parser.cc" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -480,12 +487,12 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    46,    46,    47,    48,    49,    50,    51,    52,    53,
-      57,    58,    62,    63,    67,    72,    73,    74,    75,    76,
-      81,    82,    83,    84,    85,    89,    90,    94,    95,    99,
-     100,   101,   102,   103,   107,   108,   109,   110,   111,   112,
-     113,   117,   118,   122,   123,   124,   125,   129,   130,   134,
-     135,   136,   137,   141,   142,   146,   147,   151,   152
+       0,    51,    51,    52,    53,    54,    55,    56,    57,    58,
+      62,    63,    67,    68,    72,    77,    78,    79,    80,    81,
+      86,    87,    88,    89,    90,    94,    95,    99,   100,   104,
+     105,   106,   107,   108,   112,   113,   114,   115,   116,   117,
+     118,   122,   123,   127,   128,   129,   130,   134,   135,   139,
+     140,   141,   142,   146,   147,   151,   152,   156,   157
 };
 #endif
 
@@ -1381,13 +1388,121 @@ yyreduce:
   switch (yyn)
     {
         case 15:
-#line 72 "grammar/lang.par" /* yacc.c:1646  */
-    { (yyval.node) = new BinaryExpr(); }
-#line 1387 "grammar/parser.cc" /* yacc.c:1646  */
+#line 77 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new BinaryExpr('+', (yyvsp[-2].node), (yyvsp[0].node)); }
+#line 1394 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 16:
+#line 78 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new BinaryExpr('-', (yyvsp[-2].node), (yyvsp[0].node)); }
+#line 1400 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 79 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new BinaryExpr('*', (yyvsp[-2].node), (yyvsp[0].node)); }
+#line 1406 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 80 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new BinaryExpr('/', (yyvsp[-2].node), (yyvsp[0].node)); }
+#line 1412 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 81 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); }
+#line 1418 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 86 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new UnaryExpr('+', (yyvsp[0].node)); }
+#line 1424 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 87 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new UnaryExpr('-', (yyvsp[0].node)); }
+#line 1430 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 22:
+#line 88 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new UnaryExpr('!', (yyvsp[0].node)); }
+#line 1436 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 23:
+#line 89 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new UnaryExpr('~', (yyvsp[0].node)); }
+#line 1442 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 24:
+#line 90 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); }
+#line 1448 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 25:
+#line 94 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); }
+#line 1454 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 26:
+#line 95 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); }
+#line 1460 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 27:
+#line 99 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new CallExpr(); }
+#line 1466 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 28:
+#line 100 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new CallExpr(); }
+#line 1472 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 29:
+#line 104 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new Atom((yyvsp[0].ival)); }
+#line 1478 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 30:
+#line 105 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new Atom((yyvsp[0].fval)); }
+#line 1484 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 31:
+#line 106 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new Atom((yyvsp[0].sval)); }
+#line 1490 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 32:
+#line 107 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = new Atom((yyvsp[0].sval)); }
+#line 1496 "grammar/parser.cc" /* yacc.c:1646  */
+    break;
+
+  case 33:
+#line 108 "grammar/lang.par" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[-1].node); }
+#line 1502 "grammar/parser.cc" /* yacc.c:1646  */
     break;
 
 
-#line 1391 "grammar/parser.cc" /* yacc.c:1646  */
+#line 1506 "grammar/parser.cc" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1615,5 +1730,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 154 "grammar/lang.par" /* yacc.c:1906  */
+#line 159 "grammar/lang.par" /* yacc.c:1906  */
 

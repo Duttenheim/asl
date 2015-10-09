@@ -1,3 +1,4 @@
+#pragma once
 //-----------------------------------------------------------------------------------------------------
 /*
     NAMESPACE::CLASS
@@ -7,19 +8,21 @@
     Copyright 2015 - See license file LICENSE.txt
 */
 //-----------------------------------------------------------------------------------------------------
- 
+#include "expr.h"
 namespace ASL
 {
     
-struct Expr
+struct UnaryExpr : public Expr
 {
 public:
     /// constructor
-    Expr();
+    UnaryExpr(const char op, Expr* e);
     /// destructor
-    virtual ~Expr();
+    virtual ~UnaryExpr();
 
 private:
+    char op;
+    Expr* expr;
 };
 
 } // namespace ASL
